@@ -1,0 +1,26 @@
+{
+  "port": 8080,
+  "enable_https": false,
+  "public_key_path": "",
+  "private_key_path": "",
+  "static_files": [
+    {
+      "url": "/hello",
+      "file_path": "sample/files/sample1.html"
+    },
+    {
+      "url": "/world",
+      "file_path": "sample/files/sample2.html"
+    },
+    {
+      "url": "/hello-world",
+      "file_path": "sample/folder/sample3.html"
+    }
+  ],
+  "static_folder": [
+    {
+      "url": "/folder-sample",
+      "folder_path": "sample/folder"
+    }
+  ]
+}
