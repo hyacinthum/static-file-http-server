@@ -50,3 +50,60 @@ func initialization(err error) {
 	}
 	log.Println("The sample files are generated successfully, please modify the configuration file and restart the program.")
 }
+
+func defaultConfig() Config {
+	return Config{
+		Port:           8080,
+		EnableHTTPS:    false,
+		PublicKeyPath:  "",
+		PrivateKeyPath: "",
+		StaticFiles: []File{
+			{
+				URL:        "/hello",
+				FilePath:   "sample/files/sample1.html",
+				EnableAuth: true,
+				Authorization: []Auth{
+					{
+						Username: "username-sample1",
+						Password: "password-sample1",
+					},
+				},
+			},
+			{
+				URL:        "/world",
+				FilePath:   "sample/files/sample2.html",
+				EnableAuth: true,
+				Authorization: []Auth{
+					{
+						Username: "username-sample2",
+						Password: "password-sample2",
+					},
+				},
+			},
+			{
+				URL:        "/hello-world",
+				FilePath:   "sample/folder/sample3.html",
+				EnableAuth: false,
+				Authorization: []Auth{
+					{
+						Username: "username-sample3",
+						Password: "password-sample3",
+					},
+				},
+			},
+		},
+		StaticFolder: []Folder{
+			{
+				URL:        "/folder-sample",
+				FolderPath: "sample/folder",
+				EnableAuth: true,
+				Authorization: []Auth{
+					{
+						Username: "username-folder",
+						Password: "password-folder",
+					},
+				},
+			},
+		},
+	}
+}

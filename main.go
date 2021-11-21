@@ -8,16 +8,6 @@ import (
 	"os"
 )
 
-type File struct {
-	URL      string `json:"url"`
-	FilePath string `json:"file_path"`
-}
-
-type Folder struct {
-	URL        string `json:"url"`
-	FolderPath string `json:"folder_path"`
-}
-
 type Config struct {
 	Port           int      `json:"port"`
 	EnableHTTPS    bool     `json:"enable_https"`
@@ -30,6 +20,10 @@ type Config struct {
 var server Config
 
 func main() {
+	run()
+}
+
+func run() {
 	d, err := os.ReadFile("config.json")
 	if err != nil {
 		initialization(err)
@@ -45,18 +39,10 @@ func main() {
 		if err != nil {
 			d = make([]byte, 0)
 		}
-		http.HandleFunc(file.URL, func(d []byte) func(http.ResponseWriter, *http.Request) {
-			return func(w http.ResponseWriter, r *http.Request) {
-				_, err = w.Write(d)
-				if err != nil {
-					log.Printf("WARNING: %v\n", err.Error())
-				}
-			}
-		}(d))
+		http.HandleFunc(file.URL, staticFileHandler(d, file))
 	}
 	for _, folder := range server.StaticFolder {
-		fmt.Println(folder.URL, folder.FolderPath)
-		http.Handle(folder.URL, http.StripPrefix(folder.URL, http.FileServer(http.Dir(folder.FolderPath))))
+		http.HandleFunc(folder.URL, folderHandler(folder))
 	}
 	log.Printf("Server is Listening: 0.0.0.0:%v\n", server.Port)
 	if !server.EnableHTTPS {

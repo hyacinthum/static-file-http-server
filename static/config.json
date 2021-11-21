@@ -6,21 +6,49 @@
   "static_files": [
     {
       "url": "/hello",
-      "file_path": "sample/files/sample1.html"
+      "file_path": "sample/files/sample1.html",
+      "enable_auth": true,
+      "authorization": [
+        {
+          "username": "username-sample1",
+          "password": "password-sample1"
+        }
+      ]
     },
     {
       "url": "/world",
-      "file_path": "sample/files/sample2.html"
+      "file_path": "sample/files/sample2.html",
+      "enable_auth": true,
+      "authorization": [
+        {
+          "username": "username-sample2",
+          "password": "password-sample2"
+        }
+      ]
     },
     {
       "url": "/hello-world",
-      "file_path": "sample/folder/sample3.html"
+      "file_path": "sample/folder/sample3.html",
+      "enable_auth": false,
+      "authorization": [
+        {
+          "username": "username-sample3",
+          "password": "password-sample3"
+        }
+      ]
     }
   ],
   "static_folder": [
     {
       "url": "/folder-sample",
-      "folder_path": "sample/folder"
+      "folder_path": "sample/folder",
+      "enable_auth": true,
+      "authorization": [
+        {
+          "username": "username-folder",
+          "password": "password-folder"
+        }
+      ]
     }
   ]
 }
