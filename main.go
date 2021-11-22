@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-type Config struct {
+type config struct {
 	Port           int      `json:"port"`
 	EnableHTTPS    bool     `json:"enable_https"`
 	PublicKeyPath  string   `json:"public_key_path"`
@@ -17,32 +17,37 @@ type Config struct {
 	StaticFolder   []Folder `json:"static_folder"`
 }
 
-var server Config
+var server config
 
 func main() {
-	run()
+	server.loadConfig()
+	server.run()
 }
 
-func run() {
+func (server *config) loadConfig() {
 	d, err := os.ReadFile("config.json")
 	if err != nil {
 		initialization(err)
 		os.Exit(0)
 	}
-	err = json.Unmarshal(d, &server)
+	err = json.Unmarshal(d, server)
 	if err != nil {
 		log.Println("Configuration file parsing error.")
 		log.Fatalln("Delete config.json to regenerate the default configuration file.")
 	}
+}
+
+func (server config) run() {
+	var err error
 	for _, file := range server.StaticFiles {
-		d, err = os.ReadFile(file.FilePath)
+		d, err := os.ReadFile(file.FilePath)
 		if err != nil {
 			d = make([]byte, 0)
 		}
-		http.HandleFunc(file.URL, staticFileHandler(d, file))
+		http.HandleFunc(file.URL, server.staticFileHandler(d, file))
 	}
 	for _, folder := range server.StaticFolder {
-		http.HandleFunc(folder.URL, folderHandler(folder))
+		http.HandleFunc(folder.URL, server.folderHandler(folder))
 	}
 	log.Printf("Server is Listening: 0.0.0.0:%v\n", server.Port)
 	if !server.EnableHTTPS {

@@ -9,10 +9,10 @@ type Folder struct {
 	Authorization `json:"authorization"`
 }
 
-func folderHandler(folder Folder) func(http.ResponseWriter, *http.Request) {
+func (server config) folderHandler(folder Folder) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if folder.EnableAuth {
-			if !authorizationHandler(w, r, folder.authorizationTable()) {
+			if !folder.authorizationHandler(w, r) {
 				return
 			}
 		}

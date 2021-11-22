@@ -51,8 +51,8 @@ func initialization(err error) {
 	log.Println("The sample files are generated successfully, please modify the configuration file and restart the program.")
 }
 
-func defaultConfig() Config {
-	return Config{
+func (server *config) defaultConfig() {
+	*server = config{
 		Port:           8080,
 		EnableHTTPS:    false,
 		PublicKeyPath:  "",

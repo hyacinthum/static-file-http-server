@@ -22,7 +22,8 @@ func (authorization Authorization) authorizationTable() map[string][]byte {
 	return m
 }
 
-func authorizationHandler(w http.ResponseWriter, r *http.Request, m map[string][]byte) bool {
+func (authorization Authorization) authorizationHandler(w http.ResponseWriter, r *http.Request) bool {
+	m := authorization.authorizationTable()
 	username, password, ok := r.BasicAuth()
 	if !ok {
 		w.Header().Set("WWW-Authenticate", "Basic realm=\"private\"")

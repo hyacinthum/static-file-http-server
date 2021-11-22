@@ -12,10 +12,10 @@ type File struct {
 	Authorization `json:"authorization"`
 }
 
-func staticFileHandler(d []byte, file File) func(http.ResponseWriter, *http.Request) {
+func (server config) staticFileHandler(d []byte, file File) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if file.EnableAuth {
-			if !authorizationHandler(w, r, file.authorizationTable()) {
+			if !file.authorizationHandler(w, r) {
 				return
 			}
 		}
